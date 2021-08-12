@@ -29,7 +29,7 @@ namespace ESourcing.Products.Repositories
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
 
-        public async Task<Product> GetProductAsync(string id)
+        public async Task<Product> GetProductByIdAsync(string id)
         {
             return await _context.Products.Find(product => product.Id == id).FirstOrDefaultAsync();
         }

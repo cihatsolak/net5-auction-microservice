@@ -7,7 +7,7 @@ namespace ESourcing.Products.Repositories.Interfaces
     public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetProductsAsync();
-        Task<Product> GetProductAsync(string id);
+        Task<Product> GetProductByIdAsync(string id);
         Task<IEnumerable<Product>> GetProductByNameAsync(string name);
         Task<IEnumerable<Product>> GetProductByCategoryAsync(string categoryName);
 
