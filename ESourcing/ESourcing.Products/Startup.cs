@@ -1,3 +1,5 @@
+using ESourcing.Products.Data;
+using ESourcing.Products.Data.Interfaces;
 using ESourcing.Products.Infrastructure.IOC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,9 +23,9 @@ namespace ESourcing.Products
         {
             services.AddControllers();
             services.AddSettingsConfigurations(Configuration);
+            services.AddServiceConfiguration();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -31,14 +33,13 @@ namespace ESourcing.Products
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
