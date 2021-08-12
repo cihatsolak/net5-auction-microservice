@@ -1,9 +1,6 @@
-using ESourcing.Products.Data;
-using ESourcing.Products.Data.Interfaces;
 using ESourcing.Products.Infrastructure.IOC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +21,7 @@ namespace ESourcing.Products
             services.AddControllers();
             services.AddSettingsConfigurations(Configuration);
             services.AddServiceConfiguration();
+            services.AddSwaggerConfiguration();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -31,6 +29,8 @@ namespace ESourcing.Products
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(setup => setup.SwaggerEndpoint("/swagger/v1/swagger.json", "ESourcing.Products v1"));
             }
 
             app.UseHttpsRedirection();
