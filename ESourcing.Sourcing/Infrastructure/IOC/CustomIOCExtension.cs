@@ -1,4 +1,6 @@
-﻿using ESourcing.Sourcing.Settings.SourcingDatabase;
+﻿using ESourcing.Sourcing.Data;
+using ESourcing.Sourcing.Data.Interfaces;
+using ESourcing.Sourcing.Settings.SourcingDatabase;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -16,6 +18,11 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
             #region Singleton Service Dependencies
             services.AddSingleton<ISourcingDatabaseSettings>(provider => provider.GetRequiredService<IOptions<SourcingDatabaseSettings>>().Value);
             #endregion
+        }
+
+        public static void AddServiceConfiguration(this IServiceCollection services)
+        {
+            services.AddScoped<ISourcingContext, SourcingContext>();
         }
     }
 }

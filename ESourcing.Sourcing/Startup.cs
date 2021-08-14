@@ -20,6 +20,7 @@ namespace ESourcing.Sourcing
         {
             services.AddControllers();
             services.AddSettingsConfigurations(Configuration);
+            services.AddServiceConfiguration();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
