@@ -51,7 +51,7 @@ namespace ESourcing.Products.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] Product product)
+        public async Task<IActionResult> CreateProduct([FromBody] Product product)
         {
             await _productRepository.InsertAsync(product);
             return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
@@ -59,16 +59,30 @@ namespace ESourcing.Products.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> UpdateProduct([FromBody] Product product)
         {
-            return Ok(await _productRepository.UpdateAsync(product));
+            bool isSuccess = await _productRepository.UpdateAsync(product);
+            if (!isSuccess)
+            {
+                return Problem();
+            }
+
+            return NoContent();
         }
 
         [HttpDelete("{id:minlength(24)}")]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> DeleteProductById(string id)
         {
-            return Ok(await _productRepository.DeleteAsync(id));
+            bool isSucces = await _productRepository.DeleteAsync(id);
+            if (!isSucces)
+            {
+                return Problem();
+            }
+
+            return NoContent();
         }
         #endregion
     }

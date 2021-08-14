@@ -1,5 +1,7 @@
 ﻿using ESourcing.Sourcing.Data;
 using ESourcing.Sourcing.Data.Interfaces;
+using ESourcing.Sourcing.Repositories;
+using ESourcing.Sourcing.Repositories.Interfaces;
 using ESourcing.Sourcing.Settings.SourcingDatabase;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,7 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
         public static void AddServiceConfiguration(this IServiceCollection services)
         {
             services.AddScoped<ISourcingContext, SourcingContext>();
+            services.AddScoped<IAuctionRepository, AuctionRepository>();
         }
     }
 }
