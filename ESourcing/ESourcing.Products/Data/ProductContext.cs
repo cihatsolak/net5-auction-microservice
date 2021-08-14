@@ -10,7 +10,7 @@ namespace ESourcing.Products.Data
         #region Ctor
         public ProductContext(IProductDatabaseSettings productDatabaseSettings)
         {
-            var mongoClient = new MongoClient(productDatabaseSettings.ConnectionStrings);
+            var mongoClient = new MongoClient(productDatabaseSettings.ConnectionString);
             var database = mongoClient.GetDatabase(productDatabaseSettings.DatabaseName);
 
             Products = database.GetCollection<Product>(productDatabaseSettings.CollectionName);
