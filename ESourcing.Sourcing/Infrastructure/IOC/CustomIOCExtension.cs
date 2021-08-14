@@ -6,6 +6,7 @@ using ESourcing.Sourcing.Settings.SourcingDatabase;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 namespace ESourcing.Sourcing.Infrastructure.IOC
 {
@@ -26,6 +27,18 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
         {
             services.AddScoped<ISourcingContext, SourcingContext>();
             services.AddScoped<IAuctionRepository, AuctionRepository>();
+        }
+
+        public static void AddSwaggerConfiguration(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(setup =>
+            {
+                setup.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "ESourcing.Sourcing",
+                    Version = "1.0.0"
+                });
+            });
         }
     }
 }

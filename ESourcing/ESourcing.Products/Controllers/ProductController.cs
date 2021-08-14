@@ -2,13 +2,16 @@
 using ESourcing.Products.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace ESourcing.Products.Controllers
 {
     [Route("api/v1/[controller]/[action]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
     public class ProductController : ControllerBase
     {
         #region Fields
@@ -28,10 +31,16 @@ namespace ESourcing.Products.Controllers
 
         #region Methods
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProducts()
         {
             var products = await _productRepository.GetProductsAsync();
+            if (products is null || !products.Any())
+            {
+                return NotFound();
+            }
+
             return Ok(products);
         }
 
@@ -46,6 +55,7 @@ namespace ESourcing.Products.Controllers
                 _productLogger.LogError($"Product with id : {id},hasn't been found in database.");
                 return NotFound();
             }
+
             return Ok(product);
         }
 
@@ -58,7 +68,7 @@ namespace ESourcing.Products.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> UpdateProduct([FromBody] Product product)
         {
@@ -72,7 +82,7 @@ namespace ESourcing.Products.Controllers
         }
 
         [HttpDelete("{id:minlength(24)}")]
-        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> DeleteProductById(string id)
         {

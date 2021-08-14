@@ -36,7 +36,7 @@ namespace ESourcing.Sourcing.Controllers
         public async Task<IActionResult> GetBidsByAuctionId(string id)
         {
             var bids = await _bidRepository.GetBidsByAuctionIdAsync(id);
-            if (bids is null || bids.Any())
+            if (bids is null || !bids.Any())
             {
                 return NotFound();
             }

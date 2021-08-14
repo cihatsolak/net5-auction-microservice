@@ -21,6 +21,7 @@ namespace ESourcing.Sourcing
             services.AddControllers();
             services.AddSettingsConfigurations(Configuration);
             services.AddServiceConfiguration();
+            services.AddSwaggerConfiguration();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -28,6 +29,8 @@ namespace ESourcing.Sourcing
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(setup => setup.SwaggerEndpoint("/swagger/v1/swagger.json", "ESourcing.Sourcing v1"));
             }
 
             app.UseRouting();

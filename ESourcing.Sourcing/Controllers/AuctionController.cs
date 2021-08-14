@@ -65,7 +65,7 @@ namespace ESourcing.Sourcing.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(Auction), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Auction), (int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> UpdateAuction([FromBody] Auction auction)
         {
@@ -79,7 +79,7 @@ namespace ESourcing.Sourcing.Controllers
         }
 
         [HttpDelete("{id:length(24)}")]
-        [ProducesResponseType(typeof(Auction), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Auction), (int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult<Auction>> DeleteAuctionById(string id)
         {
