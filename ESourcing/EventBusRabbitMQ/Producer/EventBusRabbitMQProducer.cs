@@ -24,7 +24,7 @@ namespace EventBusRabbitMQ.Producer
         public EventBusRabbitMQProducer(
             IRabbitMQPersistentConnection rabbitMQPersistentConnection,
             ILogger<EventBusRabbitMQProducer> logger,
-            int retryCount)
+            int retryCount = 5)
         {
             _rabbitMQPersistentConnection = rabbitMQPersistentConnection;
             _logger = logger;

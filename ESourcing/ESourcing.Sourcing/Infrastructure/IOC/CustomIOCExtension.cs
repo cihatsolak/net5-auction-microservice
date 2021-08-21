@@ -30,6 +30,7 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
         {
             services.AddScoped<ISourcingContext, SourcingContext>();
             services.AddScoped<IAuctionRepository, AuctionRepository>();
+            services.AddScoped<IBidRepository, BidRepository>();
 
             services.AddAutoMapper(typeof(Startup));
         }
@@ -54,7 +55,7 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
                 ConnectionFactory connectionFactory = new()
                 {
                     HostName = configuration["EventBusSettings:HostName"],
-                    UserName = configuration["EventBusSettings:UserName"],
+                    UserName = configuration["EventBusSettings:Password"],
                     Password = configuration["EventBusSettings:Password"]
                 };
                 int retryCount = int.Parse(configuration["EventBusSettings:RetryCount"]);

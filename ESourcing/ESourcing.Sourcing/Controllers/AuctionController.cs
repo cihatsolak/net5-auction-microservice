@@ -149,6 +149,29 @@ namespace ESourcing.Sourcing.Controllers
 
             return Accepted();
         }
+
+        [HttpPost]
+        public IActionResult TestEvent()
+        {
+            OrderCreateEvent eventMessage = new OrderCreateEvent();
+            eventMessage.AuctionId = "dummy1";
+            eventMessage.ProductId = "dummy_product_1";
+            eventMessage.Price = 10;
+            eventMessage.Quantity = 100;
+            eventMessage.SellerUserName = "test@test.com";
+
+            try
+            {
+                _eventBusRabbitMQProducer.Publish(EventBusConstants.OrderCreateQueue, eventMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ERROR Publishing integration event: {EventId} from {AppName}", eventMessage.Id, "Sourcing");
+                throw;
+            }
+
+            return Accepted(eventMessage);
+        }
         #endregion
     }
 }
