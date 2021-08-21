@@ -3,10 +3,14 @@ using ESourcing.Sourcing.Data.Interfaces;
 using ESourcing.Sourcing.Repositories;
 using ESourcing.Sourcing.Repositories.Interfaces;
 using ESourcing.Sourcing.Settings.SourcingDatabase;
+using EventBusRabbitMQ;
+using EventBusRabbitMQ.Producer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using RabbitMQ.Client;
 
 namespace ESourcing.Sourcing.Infrastructure.IOC
 {
@@ -22,7 +26,6 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
             services.AddSingleton<ISourcingDatabaseSettings>(provider => provider.GetRequiredService<IOptions<SourcingDatabaseSettings>>().Value);
             #endregion
         }
-
         public static void AddServiceConfiguration(this IServiceCollection services)
         {
             services.AddScoped<ISourcingContext, SourcingContext>();
@@ -39,6 +42,25 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
                     Version = "1.0.0"
                 });
             });
+        }
+
+        public static void AddEventBusConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<IRabbitMQPersistentConnection>(provider =>
+            {
+                var logger = provider.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+                ConnectionFactory connectionFactory = new()
+                {
+                    HostName = configuration["EventBusSettings:HostName"],
+                    UserName = configuration["EventBusSettings:UserName"],
+                    Password = configuration["EventBusSettings:Password"]
+                };
+                int retryCount = int.Parse(configuration["EventBusSettings:RetryCount"];
+
+                return new DefaultRabbitMQPersistentConnection(connectionFactory, logger, retryCount);
+            });
+
+            services.AddSingleton<EventBusRabbitMQProducer>();
         }
     }
 }

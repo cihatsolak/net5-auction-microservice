@@ -22,6 +22,7 @@ namespace ESourcing.Sourcing
             services.AddSettingsConfigurations(Configuration);
             services.AddServiceConfiguration();
             services.AddSwaggerConfiguration();
+            services.AddEventBusConfiguration(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
