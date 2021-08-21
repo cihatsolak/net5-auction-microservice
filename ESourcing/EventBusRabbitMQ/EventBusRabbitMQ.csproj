@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Core\" />
-    <Folder Include="Events\" />
     <Folder Include="Producer\" />
   </ItemGroup>
 
