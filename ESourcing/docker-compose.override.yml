@@ -8,6 +8,13 @@ services:
        - ${WEBAPP_STORAGE_HOME}/site:/data/db
     ports:
        - "27017:27017"
+  
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+        - "15672:15672" #Yonetim Paneli
+        - "5672:5672" #AMQP Protokolu
 
   esourcing.products:
     container_name: esourcingproducts
@@ -27,11 +34,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "SourcingDatabaseSettings:ConnectionString=mongodb://sourcingdb:27017"
+      - "EventBusSettings:HostName=rabbitmq"
     depends_on:
         - sourcingdb
+        - rabbitmq
     volumes:
          - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
          - ${HOME}/.aspnet/https:/root/.aspnet/https/
     ports:
       - "8001:80" 
-
