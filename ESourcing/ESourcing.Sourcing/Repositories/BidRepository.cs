@@ -69,9 +69,9 @@ namespace ESourcing.Sourcing.Repositories
             return bids;
         }
 
-        public async Task<Bid> GetWinnerBidAsync(string id)
+        public async Task<Bid> GetAuctionWinnigBidByAuctionIdAsync(string auctionId)
         {
-            List<Bid> bids = await GetBidsByAuctionIdAsync(id);
+            List<Bid> bids = await GetBidsByAuctionIdAsync(auctionId);
 
             return bids.OrderByDescending(a => a.Price).FirstOrDefault();
         }

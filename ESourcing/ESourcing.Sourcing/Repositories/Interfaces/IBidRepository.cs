@@ -9,6 +9,6 @@ namespace ESourcing.Sourcing.Repositories.Interfaces
         Task SendBidAsync(Bid bid);
         Task<List<Bid>> GetBidsByAuctionIdAsync(string id);
         Task<List<Bid>> GetAllBidsByAuctionIdAsync(string id);
-        Task<Bid> GetWinnerBidAsync(string id);
+        Task<Bid> GetAuctionWinnigBidByAuctionIdAsync(string auctionId);
     }
 }
