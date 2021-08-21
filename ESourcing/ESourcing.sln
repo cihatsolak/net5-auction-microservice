@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Products", "Products", "{A58333C0-FC8D-4DB2-A336-5A2E7A6FF500}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESourcing.Products", "ESourcing.Products\ESourcing.Products.csproj", "{34E1C8A7-7638-4F1A-A8CB-2C9D6C611FF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESourcing.Products", "ESourcing.Products\ESourcing.Products.csproj", "{34E1C8A7-7638-4F1A-A8CB-2C9D6C611FF4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8E262E69-17CC-4834-9AB4-2112AE4B300F}"
 EndProject
@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sourcing", "Sourcing", "{3D
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{AAAC81E4-B5DD-4489-A8E7-CD3542445318}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESourcing.Sourcing", "ESourcing.Sourcing\ESourcing.Sourcing.csproj", "{D189C850-4298-41E5-843C-6F73CCD9668F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{AAAC81E4-B5DD-4489-A8E7-CD3542445318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAAC81E4-B5DD-4489-A8E7-CD3542445318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAAC81E4-B5DD-4489-A8E7-CD3542445318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D189C850-4298-41E5-843C-6F73CCD9668F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D189C850-4298-41E5-843C-6F73CCD9668F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D189C850-4298-41E5-843C-6F73CCD9668F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D189C850-4298-41E5-843C-6F73CCD9668F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{2338CBCB-ACBA-4840-B0BF-3FA5A8790493} = {E90B1D3E-0019-4220-9F94-73FB5DFCDB6B}
 		{20833879-F182-4EAF-9EA8-CF29CAE710D8} = {E90B1D3E-0019-4220-9F94-73FB5DFCDB6B}
 		{3D8A45B1-99BA-4BE2-ACC8-478A719C25B7} = {E90B1D3E-0019-4220-9F94-73FB5DFCDB6B}
+		{D189C850-4298-41E5-843C-6F73CCD9668F} = {3D8A45B1-99BA-4BE2-ACC8-478A719C25B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEAE9F1B-D281-43B5-B785-88683CCF3869}

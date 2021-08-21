@@ -11,11 +11,11 @@ namespace ESourcing.Products.Data
             bool exitsProducts = products.Find(p => true).Any();
             if (!exitsProducts)
             {
-                products.InsertManyAsync(GetConfigureProducts());
+                products.InsertManyAsync(GetPreconfiguredProducts());
             }
         }
 
-        private static IEnumerable<Product> GetConfigureProducts()
+        private static IEnumerable<Product> GetPreconfiguredProducts()
         {
             return new List<Product>()
             {
