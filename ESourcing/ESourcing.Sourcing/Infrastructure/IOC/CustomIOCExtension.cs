@@ -30,6 +30,8 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
         {
             services.AddScoped<ISourcingContext, SourcingContext>();
             services.AddScoped<IAuctionRepository, AuctionRepository>();
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         public static void AddSwaggerConfiguration(this IServiceCollection services)
@@ -55,7 +57,7 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
                     UserName = configuration["EventBusSettings:UserName"],
                     Password = configuration["EventBusSettings:Password"]
                 };
-                int retryCount = int.Parse(configuration["EventBusSettings:RetryCount"];
+                int retryCount = int.Parse(configuration["EventBusSettings:RetryCount"]);
 
                 return new DefaultRabbitMQPersistentConnection(connectionFactory, logger, retryCount);
             });

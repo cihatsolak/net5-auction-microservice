@@ -49,7 +49,7 @@ namespace ESourcing.Sourcing.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<Bid>> GetWinnerBid(string id)
         {
-            Bid bid = await _bidRepository.GetWinnerBidAsync(id);
+            Bid bid = await _bidRepository.GetAuctionWinnigBidByAuctionIdAsync(id);
             if (bid is null)
             {
                 return NotFound();
