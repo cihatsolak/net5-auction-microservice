@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Ordering.Application;
 using Ordering.Infrastructure;
 
 namespace ESourcing.Order
@@ -18,11 +19,11 @@ namespace ESourcing.Order
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddInfrastructure(Configuration);
             services.AddControllers();
+            services.AddInfrastructure(Configuration);
+            services.AddApplication();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
