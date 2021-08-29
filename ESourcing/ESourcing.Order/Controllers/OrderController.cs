@@ -37,7 +37,7 @@ namespace ESourcing.Order.Controllers
         {
             GetOrdersBySellerUsernameQuery getOrdersBySellerUsernameQuery = new(userName);
             var orderResponseList = await _mediator.Send(getOrdersBySellerUsernameQuery);
-            if (orderResponseList is not null || !orderResponseList.Any())
+            if (orderResponseList is null || !orderResponseList.Any())
             {
                 _logger.LogWarning($"No order found for {userName}.");
                 return NotFound();
