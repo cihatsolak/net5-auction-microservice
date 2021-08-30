@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  sourcingdb:
-    container_name: sourcingdb
+  sourcingmongodb:
+    container_name: sourcingmongodb
     restart: always
     volumes:
        - ${WEBAPP_STORAGE_HOME}/site:/data/db
@@ -16,13 +16,21 @@ services:
         - "15672:15672" #Yonetim Paneli
         - "5672:5672" #AMQP Protokolu
 
+  sourcingmssqldb:
+    container_name: sourcingmssqldb
+    ports:
+        - "1433:1433"
+    environment:
+       SA_PASSWORD: "jvCYrGm9xhk9yBCw"
+       ACCEPT_EULA: "Y"
+
   esourcing.products:
     container_name: esourcingproducts
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ProductDatabaseSettings:ConnectionString=mongodb://sourcingdb:27017"
+      - "ProductDatabaseSettings:ConnectionString=mongodb://sourcingmongodb:27017"
     depends_on:
-        - sourcingdb
+        - sourcingmongodb
     ports:
       - "8000:80"
     volumes:
@@ -33,13 +41,28 @@ services:
     container_name: esourcingsourcing
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "SourcingDatabaseSettings:ConnectionString=mongodb://sourcingdb:27017"
+      - "SourcingDatabaseSettings:ConnectionString=mongodb://sourcingmongodb:27017"
       - "EventBusSettings:HostName=rabbitmq"
     depends_on:
-        - sourcingdb
+        - sourcingmongodb
         - rabbitmq
     volumes:
          - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
          - ${HOME}/.aspnet/https:/root/.aspnet/https/
     ports:
       - "8001:80" 
+
+  esourcing.order:
+    container_name: esourcingorder
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:OrderApiConnection=Server=sourcingmssqldb;Database=OrderDb;User Id=sa;Password=jvCYrGm9xhk9yBCw;"
+      - "EventBusSettings:HostName=rabbitmq"
+    depends_on:
+      - sourcingmssqldb 
+      - rabbitmq
+    volumes:
+         - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
+         - ${HOME}/.aspnet/https:/root/.aspnet/https/
+    ports:
+      - "8002:80"
