@@ -32,7 +32,7 @@ namespace ESourcing.Order.Consumers
                 _rabbitMQPersistentConnection.TryConnect();
             }
 
-            using var channel = _rabbitMQPersistentConnection.CreateModel(); //kanal oluşturdum
+            var channel = _rabbitMQPersistentConnection.CreateModel(); //kanal oluşturdum
 
             //kuyruk oluşturdum.
             channel.QueueDeclare(

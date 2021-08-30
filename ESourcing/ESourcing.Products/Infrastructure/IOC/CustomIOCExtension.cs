@@ -25,8 +25,8 @@ namespace ESourcing.Products.Infrastructure.IOC
 
         public static void AddServiceConfiguration(this IServiceCollection services)
         {
-            services.AddScoped<IProductContext, ProductContext>();
-            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductContext, ProductContext>();
+            services.AddTransient<IProductRepository, ProductRepository>();
         }
 
         public static void AddSwaggerConfiguration(this IServiceCollection services)

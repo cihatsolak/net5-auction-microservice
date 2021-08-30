@@ -18,8 +18,8 @@ namespace Ordering.Infrastructure
             services.AddDbContext<OrderContext>(opt =>  opt.UseSqlServer(configuration.GetConnectionString("OrderApiConnection"),
                                                 sqlServerOptionsAction => sqlServerOptionsAction.MigrationsAssembly(typeof(OrderContext).Assembly.FullName)), ServiceLifetime.Singleton);
 
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); 
-            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>)); 
+            services.AddTransient<IOrderRepository, OrderRepository>();
         }
     }
 }

@@ -28,13 +28,14 @@ namespace ESourcing.Order
             services.AddControllers();
             services.AddInfrastructure(Configuration);
             services.AddApplication();
+            services.AddAutoMapper(typeof(Startup));
 
             #region Swagger
             services.AddSwaggerGen(setup =>
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "ESourcing.Products",
+                    Title = "ESourcing.Order",
                     Version = "1.0.0"
                 });
             });

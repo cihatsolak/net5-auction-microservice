@@ -28,9 +28,9 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
         }
         public static void AddServiceConfiguration(this IServiceCollection services)
         {
-            services.AddScoped<ISourcingContext, SourcingContext>();
-            services.AddScoped<IAuctionRepository, AuctionRepository>();
-            services.AddScoped<IBidRepository, BidRepository>();
+            services.AddTransient<ISourcingContext, SourcingContext>();
+            services.AddTransient<IAuctionRepository, AuctionRepository>();
+            services.AddTransient<IBidRepository, BidRepository>();
 
             services.AddAutoMapper(typeof(Startup));
         }
