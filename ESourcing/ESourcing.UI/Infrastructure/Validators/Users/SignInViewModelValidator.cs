@@ -7,10 +7,7 @@ namespace ESourcing.UI.Infrastructure.Validators.Users
     {
         public SignInViewModelValidator()
         {
-            RuleFor(p => p.Email)
-                .EmailAddress()
-                .NotNull()
-                .NotEmpty();
+            RuleFor(p => p.Email).EmailAddress();
 
             RuleFor(p => p.Password)
                 .MinimumLength(5)

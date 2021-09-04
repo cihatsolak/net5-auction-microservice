@@ -2,13 +2,13 @@
  * OverlayScrollbars
  * https://github.com/KingSora/OverlayScrollbars
  *
- * Version: 1.13.0
+ * Version: 1.12.0
  *
  * Copyright KingSora | Rene Haas.
  * https://github.com/KingSora
  *
  * Released under the MIT license.
- * Date: 02.08.2020
+ * Date: 05.04.2020
  */
 
 (function (global, factory) {
@@ -2326,35 +2326,24 @@
                  * @param eventNames The name(s) of the events.	
                  * @param listener The method which shall be called.	
                  * @param remove True if the handler shall be removed, false or undefined if the handler shall be added.	
-                 * @param passiveOrOptions The options for the event.
                  */
-                function setupResponsiveEventListener(element, eventNames, listener, remove, passiveOrOptions) {
+                function setupResponsiveEventListener(element, eventNames, listener, remove, passive) {
                     var collected = COMPATIBILITY.isA(eventNames) && COMPATIBILITY.isA(listener);
                     var method = remove ? 'removeEventListener' : 'addEventListener';
                     var onOff = remove ? 'off' : 'on';
                     var events = collected ? false : eventNames.split(_strSpace)
                     var i = 0;
 
-                    var passiveOrOptionsIsObj = FRAMEWORK.isPlainObject(passiveOrOptions);
-                    var passive = (_supportPassiveEvents && (passiveOrOptionsIsObj ? (passiveOrOptions._passive) : passiveOrOptions)) || false;
-                    var capture = passiveOrOptionsIsObj && (passiveOrOptions._capture || false);
-                    var nativeParam = _supportPassiveEvents ? {
-                        passive: passive,
-                        capture: capture,
-                    } : capture;
-
                     if (collected) {
                         for (; i < eventNames[LEXICON.l]; i++)
-                            setupResponsiveEventListener(element, eventNames[i], listener[i], remove, passiveOrOptions);
+                            setupResponsiveEventListener(element, eventNames[i], listener[i], remove);
                     }
                     else {
                         for (; i < events[LEXICON.l]; i++) {
-                            if(_supportPassiveEvents) {
-                                element[0][method](events[i], listener, nativeParam);
-                            }
-                            else {
+                            if (_supportPassiveEvents)
+                                element[0][method](events[i], listener, { passive: passive || false });
+                            else
                                 element[onOff](events[i], listener);
-                            }     
                         }
                     }
                 }
@@ -4003,8 +3992,8 @@
                         addRemoveClass(_hostElement, _classNameHostOverflowX, hideOverflow.x);
                         addRemoveClass(_hostElement, _classNameHostOverflowY, hideOverflow.y);
 
-                        //add or remove rtl class name for styling purposes except when its body, then the scrollbar stays
-                        if (cssDirectionChanged && !_isBody) {
+                        //add or remove rtl class name for styling purposes
+                        if (cssDirectionChanged) {
                             addRemoveClass(_hostElement, _classNameHostRTL, _isRTL);
                         }
 
@@ -4525,7 +4514,6 @@
                     var scroll = _strScroll + scrollbarVars._Left_Top;
                     var strActive = 'active';
                     var strSnapHandle = 'snapHandle';
-                    var strClickEvent = 'click';
                     var scrollDurationFactor = 1;
                     var increaseDecreaseScrollAmountKeyCodes = [16, 17]; //shift, ctrl
                     var trackTimeout;
@@ -4544,9 +4532,6 @@
                     }
                     function decreaseTrackScrollAmount() {
                         scrollDurationFactor = 1;
-                    }
-                    function stopClickEventPropagation(event) {
-                        COMPATIBILITY.stpP(event);
                     }
                     function documentKeyDown(event) {
                         if (inArray(event.keyCode, increaseDecreaseScrollAmountKeyCodes) > -1)
@@ -4591,11 +4576,7 @@
                             [_strMouseTouchMoveEvent, _strMouseTouchUpEvent, _strKeyDownEvent, _strKeyUpEvent, _strSelectStartEvent],
                             [documentDragMove, documentMouseTouchUp, documentKeyDown, documentKeyUp, documentOnSelectStart],
                             true);
-                        COMPATIBILITY.rAF()(function() {
-                            setupResponsiveEventListener(_documentElement, strClickEvent, stopClickEventPropagation, true, { _capture: true });
-                        });
-                        
-                            
+
                         if (_scrollbarsHandlesDefineScrollPos)
                             refreshScrollbarHandleOffset(isHorizontal, true);
 
@@ -4650,10 +4631,6 @@
                         setupResponsiveEventListener(_documentElement,
                             [_strMouseTouchMoveEvent, _strMouseTouchUpEvent, _strSelectStartEvent],
                             [documentDragMove, documentMouseTouchUp, documentOnSelectStart]);
-                        COMPATIBILITY.rAF()(function() {
-                            setupResponsiveEventListener(_documentElement, strClickEvent, stopClickEventPropagation, false, { _capture: true });
-                        });
-                        
 
                         if (_msieVersion || !_documentMixed)
                             COMPATIBILITY.prvD(event);
@@ -4661,10 +4638,7 @@
                     }
                     function onTrackMouseTouchDown(event) {
                         if (onMouseTouchDownContinue(event)) {
-                            var handleToViewportRatio = scrollbarVars._info._handleLength / Math.round(MATH.min(1, _viewportSize[scrollbarVars._w_h] / _contentScrollSizeCache[scrollbarVars._w_h]) * scrollbarVars._info._trackLength);
-                            var scrollDistance = MATH.round(_viewportSize[scrollbarVars._w_h] * handleToViewportRatio);
-                            var scrollBaseDuration = 270 * handleToViewportRatio;
-                            var scrollFirstIterationDelay = 400 * handleToViewportRatio;
+                            var scrollDistance = MATH.round(_viewportSize[scrollbarVars._w_h]);
                             var trackOffset = scrollbarVars._track.offset()[scrollbarVars._left_top];
                             var ctrlKey = event.ctrlKey;
                             var instantScroll = event.shiftKey;
@@ -4689,8 +4663,8 @@
                                     var handleLength = scrollbarVarsInfo._handleLength;
                                     var scrollRange = scrollbarVarsInfo._maxScroll;
                                     var currScroll = scrollbarVarsInfo._currentScroll;
-                                    var scrollDuration = scrollBaseDuration * scrollDurationFactor;
-                                    var timeoutDelay = isFirstIteration ? MATH.max(scrollFirstIterationDelay, scrollDuration) : scrollDuration;
+                                    var scrollDuration = 270 * scrollDurationFactor;
+                                    var timeoutDelay = isFirstIteration ? MATH.max(400, scrollDuration) : scrollDuration;
                                     var instantScrollPosition = scrollRange * ((mouseOffset - (handleLength / 2)) / (trackLength - handleLength)); // 100% * positionPercent
                                     var rtlIsNormal = _isRTL && isHorizontal && ((!_rtlScrollBehavior.i && !_rtlScrollBehavior.n) || _normalizeRTLCache);
                                     var decreaseScrollCondition = rtlIsNormal ? handleOffset < mouseOffset : handleOffset > mouseOffset;
@@ -4865,7 +4839,7 @@
                     var scrollbarVarsInfo = scrollbarVars._info;
                     var digit = 1000000;
                     //get and apply intended handle length
-                    var handleRatio = MATH.min(1, _viewportSize[scrollbarVars._w_h] / _contentScrollSizeCache[scrollbarVars._w_h]);
+                    var handleRatio = MATH.min(1, (_hostSizeCache[scrollbarVars._w_h] - (_paddingAbsoluteCache ? (isHorizontal ? _paddingX : _paddingY) : 0)) / _contentScrollSizeCache[scrollbarVars._w_h]);
                     handleCSS[scrollbarVars._width_height] = (MATH.floor(handleRatio * 100 * digit) / digit) + '%'; //the last * digit / digit is for flooring to the 4th digit
 
                     if (!nativeOverlayScrollbarsAreActive())

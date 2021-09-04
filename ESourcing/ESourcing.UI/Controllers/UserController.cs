@@ -29,6 +29,18 @@ namespace ESourcing.UI.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult SignUp()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SignUp(AppUserViewModel appUserViewModel)
+        {
+            return View();
+        }
         #endregion
     }
 }

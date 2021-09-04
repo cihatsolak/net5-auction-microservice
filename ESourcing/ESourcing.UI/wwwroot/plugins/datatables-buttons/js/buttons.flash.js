@@ -1235,9 +1235,7 @@ DataTable.ext.buttons.excelFlash = $.extend( {}, flashButton, {
 					}
 				}
 
-				row[i] = typeof row[i].trim === 'function'
-					? row[i].trim()
-					: row[i];
+				row[i] = $.trim( row[i] );
 
 				// Special number formatting options
 				for ( var j=0, jen=_excelSpecials.length ; j<jen ; j++ ) {
