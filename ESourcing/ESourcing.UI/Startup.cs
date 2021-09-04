@@ -1,5 +1,10 @@
+using ESourcing.UI.Core.Entities;
+using ESourcing.UI.Infrastructure.Data;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,7 +26,16 @@ namespace ESourcing.UI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<WebAppContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WebAppConnection")));
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<WebAppContext>();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddFluentValidation(configurationExpression =>
+            {
+                configurationExpression.RegisterValidatorsFromAssemblyContaining<Startup>();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
