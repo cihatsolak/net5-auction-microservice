@@ -5,31 +5,31 @@ namespace ESourcing.UI.Models.Users
 {
     public class AppUserViewModel
     {
-        [DisplayName("Kullanıcı Adı")]
+        [DisplayName("Username")]
         public string UserName { get; set; }
 
-        [DisplayName("Ad")]
+        [DisplayName("Firstname")]
         public string FirstName { get; set; }
 
-        [DisplayName("Soyad")]
+        [DisplayName("Lastname")]
         public string LastName { get; set; }
 
-        [DisplayName("Telefon No")]
+        [DisplayName("Phone Number")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
-        [DisplayName("E-Posta Adresi")]
+        [DisplayName("Email Address")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [DisplayName("Şifre")]
+        [DisplayName("Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [DisplayName("Alıcı mı?")]
+        [DisplayName("Is Buyer")]
         public bool IsBuyer { get; set; }
 
-        [DisplayName("Satıcı mı?")]
+        [DisplayName("Is Seller")]
         public bool IsSeller { get; set; }
 
         public int UserSelectedTypeId { get; set; }
@@ -37,7 +37,7 @@ namespace ESourcing.UI.Models.Users
 
     public enum UserType
     {
-        [Display(Name = "Bayi")] Seller = 1,
-        [Display(Name = "Satıcı")] Buyer = 2
+        [Display(Name = "Buyer")] Seller = 1,
+        [Display(Name = "Seller")] Buyer = 2
     }
 }

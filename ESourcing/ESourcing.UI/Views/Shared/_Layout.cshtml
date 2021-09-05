@@ -1,5 +1,5 @@
-﻿@*@inject SignInManager<AppUser> SignInManager
-@inject UserManager<AppUser> UserManager*@
+﻿@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +53,7 @@
 
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        @*@if (SignInManager.IsSignedIn(User))
+                        @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <a class="nav-item nav-link">
@@ -88,10 +88,10 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-item nav-link" asp-controller="Home" asp-action="Logout">
+                                <a class="nav-item nav-link" asp-controller="User" asp-action="SignOutt">
                                     <i class="nav-icon far fa-user"></i>
                                     <p>
-                                        Logout
+                                        Sign Out
                                     </p>
                                 </a>
                             </li>
@@ -99,7 +99,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-item nav-link" asp-controller="Home" asp-action="SignUp">
+                                <a class="nav-item nav-link" asp-controller="User" asp-action="SignUp">
                                     <i class="nav-icon far fa-user"></i>
                                     <p>
                                         Sign Up
@@ -107,14 +107,14 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-item nav-link" asp-controller="Home" asp-action="Login">
+                                <a class="nav-item nav-link" asp-controller="User" asp-action="SignIn">
                                     <i class="nav-icon far fa-user"></i>
                                     <p>
-                                        Login
+                                        Sign In
                                     </p>
                                 </a>
                             </li>
-                        }*@
+                        }
                     </ul>
                 </nav>
             </div>

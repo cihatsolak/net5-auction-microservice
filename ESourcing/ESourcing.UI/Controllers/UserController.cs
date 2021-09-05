@@ -2,6 +2,7 @@
 using ESourcing.UI.Infrastructure.Extensions;
 using ESourcing.UI.Models.Users;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ESourcing.UI.Controllers
 {
+    [AllowAnonymous]
     public class UserController : BaseController
     {
         #region Fields
@@ -31,15 +33,36 @@ namespace ESourcing.UI.Controllers
 
         #region Methods
         [HttpGet]
-        public IActionResult SignIn()
+        public IActionResult SignIn(string returnUrl = "~/")
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+                return View();
+
+            if (!Url.IsLocalUrl(returnUrl))
+                return View();
+
+            return LocalRedirect(returnUrl);
         }
 
         [HttpPost]
-        public IActionResult SignIn(SignInViewModel signInViewModel)
+        public async Task<IActionResult> SignIn(SignInViewModel signInViewModel, string returnUrl = "~/")
         {
-            return View();
+            var user = await _userManager.FindByEmailAsync(signInViewModel.Email);
+            if (user is null)
+            {
+                ModelState.AddModelError(string.Empty, "User not found!");
+                return View(signInViewModel);
+            }
+
+            await _signInManager.SignOutAsync();
+            var signInResult = await _signInManager.PasswordSignInAsync(user, signInViewModel.Password, false, false);
+            if (!signInResult.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Email address or password is invalid");
+                return View(signInViewModel);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -64,6 +87,12 @@ namespace ESourcing.UI.Controllers
 
             identityResult.AddModelErrors(ModelState);
             return View(appUserViewModel);
+        }
+
+        public async Task<IActionResult> SignOutt()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(SignIn));
         }
         #endregion
     }

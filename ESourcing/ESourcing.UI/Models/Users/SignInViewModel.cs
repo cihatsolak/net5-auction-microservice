@@ -5,11 +5,11 @@ namespace ESourcing.UI.Models.Users
 {
     public class SignInViewModel
     {
-        [DisplayName("E-Posta Adresi")]
+        [DisplayName("Email Address")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [DisplayName("Şifre")]
+        [DisplayName("Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

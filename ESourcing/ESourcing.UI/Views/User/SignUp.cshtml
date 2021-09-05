@@ -1,10 +1,10 @@
 ﻿@model AppUserViewModel
 
 @{
-    ViewData["Title"] = "SignUp";
+    ViewData["Title"] = "Make sure the information is correct!";
 }
 
-<h1>Kayıt Formu</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 
 <hr />
 <div class="row">
@@ -42,7 +42,7 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label>Kullanıcı Tipi</label>
+                <label>User Type</label>
                 <select class="custom-select" asp-for="UserSelectedTypeId" asp-items="@Html.GetEnumSelectList<UserType>()"></select>
             </div>
 
@@ -53,7 +53,7 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="text-center">
+    <a class="text-muted" asp-action="SignIn">Are you registered? Sign in now.</a>
 </div>
 
