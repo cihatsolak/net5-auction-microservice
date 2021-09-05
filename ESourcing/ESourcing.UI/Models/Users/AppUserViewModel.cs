@@ -31,5 +31,13 @@ namespace ESourcing.UI.Models.Users
 
         [DisplayName("Satıcı mı?")]
         public bool IsSeller { get; set; }
+
+        public int UserSelectedTypeId { get; set; }
+    }
+
+    public enum UserType
+    {
+        [Display(Name = "Bayi")] Seller = 1,
+        [Display(Name = "Satıcı")] Buyer = 2
     }
 }

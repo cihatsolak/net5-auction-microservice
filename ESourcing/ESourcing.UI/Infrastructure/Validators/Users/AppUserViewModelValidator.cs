@@ -22,6 +22,8 @@ namespace ESourcing.UI.Infrastructure.Validators.Users
                 .MinimumLength(5)
                 .NotNull()
                 .NotEmpty();
+
+            RuleFor(p => p.UserSelectedTypeId).GreaterThan(0);
         }
     }
 }
