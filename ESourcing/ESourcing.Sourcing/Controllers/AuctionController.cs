@@ -75,7 +75,7 @@ namespace ESourcing.Sourcing.Controllers
         public async Task<IActionResult> CreateAuction([FromBody] Auction auction)
         {
             await _auctionRepository.InsertAsync(auction);
-            return CreatedAtRoute(nameof(GetAuctionById), new { id = auction.Id }, auction);
+            return Created(string.Empty, auction);
         }
 
         [HttpPut]
