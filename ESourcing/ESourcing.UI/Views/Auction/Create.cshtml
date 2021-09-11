@@ -1,0 +1,106 @@
+﻿@model AuctionViewModel
+@{
+    ViewData["Title"] = "Auction Craete";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create">
+<div asp-validation-summary="All" class="text-danger"></div>
+<div class="card card-primary card-outline">
+    <div class="card-body">
+        <h4>Auction Create Page Step</h4>
+        <div class="row">
+            <div class="col-5 col-sm-3">
+                <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home" aria-selected="true">General Info</a>
+                    <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Product Select</a>
+                    <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Seller Select</a>
+                </div>
+            </div>
+            <div class="col-7 col-sm-9">
+                <div class="tab-content" id="vert-tabs-tabContent">
+
+                    <div id="vert-tabs-home" class="text-left show active tab-pane fade card card-primary" role="tabpanel" aria-labelledby="vert-tabs-home-tab">
+                        <div class="card-header">
+                            <h3 class="card-title">General Info Inputs</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="Name"></label>
+                                <input type="text" asp-for="Name" placeholder="Enter Auction Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description"></label>
+                                <textarea asp-for="Description" class="form-control" placeholder="Enter Auction Description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Quantity"></label>
+                                <input type="number" asp-for="Quantity" placeholder="Enter Quantity" class="form-control" />
+                                <span asp-validation-for="Quantity" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Start Date:</label>
+                                <div class="input-group date" id="StartedAt" data-target-input="nearest">
+                                    <input type="text" asp-for="StartedAt" class="form-control datetimepicker-input" data-target="#StartedAt" />
+                                    <div class="input-group-append" data-target="#StartedAt" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Finish Date:</label>
+                                <div class="input-group date" id="FinishedAt" data-target-input="nearest">
+                                    <input type="text" asp-for="FinishedAt" class="form-control datetimepicker-input" data-target="#FinishedAt" />
+                                    <div class="input-group-append" data-target="#FinishedAt" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-left tab-pane fade card card-warning" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
+                        <div class="card-header">
+                            <h3 class="card-title">Product Info Input</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <select asp-for="ProductId" asp-items="Model.Products" class="custom-select form-control col-sm-6">
+                                    <option selected disabled>Please Select Product</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-left tab-pane fade card card-danger" id="vert-tabs-messages" role="tabpanel" aria-labelledby="vert-tabs-messages-tab">
+                        <div class="card-header">
+                            <h3 class="card-title">Seller Info Input</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <select asp-for="SellerId" asp-items="Model.Sellers" class="custom-select form-control col-sm-6">
+                                    <option selected disabled>Please Select Seller</option>
+                                </select>
+                            </div>
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <input type="submit" value="Create Auction" class="btn btn-info col-xs-3" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
