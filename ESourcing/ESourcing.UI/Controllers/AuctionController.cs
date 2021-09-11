@@ -22,5 +22,22 @@ namespace ESourcing.UI.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Detail(int id)
+        {
+            if (0 >= id)
+                return null;
+
+
+
+            return View(new AuctionViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Detail(AuctionViewModel auctionViewModel)
+        {
+            return View();
+        }
     }
 }

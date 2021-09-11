@@ -14,10 +14,6 @@ namespace ESourcing.UI.Infrastructure.Validators.Auctions
             RuleFor(p => p.Quantity).GreaterThan(0);
             RuleFor(p => p.StartedAt).Must(IsValidDateTime).WithMessage("Enter a valid date");
             RuleFor(p => p.FinishedAt).Must(IsValidDateTime).WithMessage("Enter a valid date");
-            RuleFor(p => p.CreatedAt).Must(IsValidDateTime).WithMessage("Enter a valid date");
-            RuleFor(p => p.Status).GreaterThan(0);
-            RuleFor(p => p.SellerId).NotNull().NotEmpty();
-            RuleFor(p => p.Sellers).NotNull().NotEmpty();
         }
 
         private bool IsValidDateTime(DateTime dateTime)
