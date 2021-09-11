@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ESourcing.UI.Clients
@@ -26,7 +25,7 @@ namespace ESourcing.UI.Clients
         #endregion
 
         #region Methods
-        public async Task<Result<List<ProductViewModel>>> GetProducts()
+        public async Task<Result<List<ProductViewModel>>> GetProductsAsync()
         {
             var httpResponseMessage = await _httpClient.GetAsync("Product/GetProducts");
             if (!httpResponseMessage.IsSuccessStatusCode)

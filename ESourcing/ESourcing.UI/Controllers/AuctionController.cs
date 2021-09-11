@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,21 +16,32 @@ namespace ESourcing.UI.Controllers
         #region Fields
         private readonly UserManager<AppUser> _userManager;
         private readonly ProductClient _productClient;
+        private readonly AuctionClient _auctionClient;
         #endregion
 
         #region Ctor
-        public AuctionController(UserManager<AppUser> userManager, ProductClient productClient)
+        public AuctionController(
+            UserManager<AppUser> userManager,
+            ProductClient productClient,
+            AuctionClient auctionClient)
         {
             _userManager = userManager;
             _productClient = productClient;
+            _auctionClient = auctionClient;
         }
         #endregion
 
         #region Actions
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await _auctionClient.GetAuctionsAsync();
+            if (!result.IsSuccess)
+            {
+                //Todo: Exception    
+            }
+
+            return View(result.Data);
         }
 
         [HttpGet]
@@ -43,7 +54,7 @@ namespace ESourcing.UI.Controllers
                 Value = user.Id
             }).ToListAsync();
 
-            var products = await _productClient.GetProducts();
+            var products = await _productClient.GetProductsAsync();
             if (products.IsSuccess)
             {
                 auctionViewModel.Products = products.Data.Select(product => new SelectListItem
@@ -57,9 +68,19 @@ namespace ESourcing.UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(AuctionViewModel auctionViewModel)
+        public async Task<IActionResult> Create(AuctionViewModel auctionViewModel)
         {
-            return View();
+            auctionViewModel.Status = 1;
+            auctionViewModel.CreatedAt = DateTime.Now;
+
+            var result = await _auctionClient.CreateAuctionAsync(auctionViewModel);
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, "Could not create auction");
+                return View(result.Data);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

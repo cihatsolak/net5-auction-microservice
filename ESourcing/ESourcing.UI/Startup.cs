@@ -65,6 +65,7 @@ namespace ESourcing.UI
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddHttpClient<ProductClient>();
+            services.AddHttpClient<AuctionClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -85,7 +86,7 @@ namespace ESourcing.UI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Action}/{action=Index}/{id?}");
+                    pattern: "{controller=Auction}/{action=Index}/{id?}");
             });
         }
     }
