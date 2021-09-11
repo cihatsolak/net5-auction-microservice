@@ -1,7 +1,10 @@
-﻿namespace ESourcing.UI.Models
+﻿using Newtonsoft.Json;
+
+namespace ESourcing.UI.Models
 {
     public abstract class BaseViewModel
     {
-        public int Id { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
     }
 }

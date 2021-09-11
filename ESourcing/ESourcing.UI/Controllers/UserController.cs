@@ -35,8 +35,8 @@ namespace ESourcing.UI.Controllers
         [HttpGet]
         public IActionResult SignIn(string returnUrl = "~/")
         {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Auction");
+            if (!User.Identity.IsAuthenticated)
+                return View();
 
             if (!Url.IsLocalUrl(returnUrl))
                 return View();

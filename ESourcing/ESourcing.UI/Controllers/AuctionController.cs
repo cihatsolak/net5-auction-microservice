@@ -1,4 +1,5 @@
-﻿using ESourcing.UI.Core.Entities;
+﻿using ESourcing.UI.Clients;
+using ESourcing.UI.Core.Entities;
 using ESourcing.UI.Models.Auctions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,14 @@ namespace ESourcing.UI.Controllers
     {
         #region Fields
         private readonly UserManager<AppUser> _userManager;
+        private readonly ProductClient _productClient;
         #endregion
 
         #region Ctor
-        public AuctionController(UserManager<AppUser> userManager)
+        public AuctionController(UserManager<AppUser> userManager, ProductClient productClient)
         {
             _userManager = userManager;
+            _productClient = productClient;
         }
         #endregion
 
@@ -40,14 +43,15 @@ namespace ESourcing.UI.Controllers
                 Value = user.Id
             }).ToListAsync();
 
-            auctionViewModel.Products = new List<SelectListItem>
+            var products = await _productClient.GetProducts();
+            if (products.IsSuccess)
             {
-                new SelectListItem()
+                auctionViewModel.Products = products.Data.Select(product => new SelectListItem
                 {
-                    Text ="test",
-                    Value= "1"
-                }
-            };
+                    Text = product.Name,
+                    Value = product.Id.ToString()
+                }).ToList();
+            }
 
             return View(auctionViewModel);
         }

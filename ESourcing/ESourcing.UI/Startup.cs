@@ -1,3 +1,4 @@
+using ESourcing.UI.Clients;
 using ESourcing.UI.Core.Entities;
 using ESourcing.UI.Core.Repositories;
 using ESourcing.UI.Core.Repositories.Base;
@@ -62,6 +63,8 @@ namespace ESourcing.UI
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddHttpClient<ProductClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -82,7 +85,7 @@ namespace ESourcing.UI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=User}/{action=SignIn}/{id?}");
+                    pattern: "{controller=Action}/{action=Index}/{id?}");
             });
         }
     }
