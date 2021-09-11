@@ -1,5 +1,9 @@
 using ESourcing.UI.Core.Entities;
+using ESourcing.UI.Core.Repositories;
+using ESourcing.UI.Core.Repositories.Base;
 using ESourcing.UI.Infrastructure.Data;
+using ESourcing.UI.Infrastructure.Repositories;
+using ESourcing.UI.Infrastructure.Repositories.Base;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -55,6 +59,9 @@ namespace ESourcing.UI
                     options.Cookie.SameSite = SameSiteMode.Strict;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
                 });
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
