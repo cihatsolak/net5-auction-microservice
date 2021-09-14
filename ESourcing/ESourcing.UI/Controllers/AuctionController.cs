@@ -17,17 +17,20 @@ namespace ESourcing.UI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ProductClient _productClient;
         private readonly AuctionClient _auctionClient;
+        private readonly BidClient _bidClient;
         #endregion
 
         #region Ctor
         public AuctionController(
             UserManager<AppUser> userManager,
             ProductClient productClient,
-            AuctionClient auctionClient)
+            AuctionClient auctionClient, 
+            BidClient bidClient)
         {
             _userManager = userManager;
             _productClient = productClient;
             _auctionClient = auctionClient;
+            _bidClient = bidClient;
         }
         #endregion
 
@@ -84,9 +87,28 @@ namespace ESourcing.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(string id)
+        public async Task<IActionResult> Detail(string id)
         {
-            return View(new AuctionBidsViewModel());
+            if (string.IsNullOrWhiteSpace(id))
+                return RedirectToAction(nameof(Index));
+
+            var auctionResult = await _auctionClient.GetAuctionByIdAsync(id);
+            if (!auctionResult.IsSuccess)
+                return RedirectToAction(nameof(Index));
+
+            var bidsResult = await _bidClient.GetBidsByAuctionId(id);
+            if (!bidsResult.IsSuccess)
+                return RedirectToAction(nameof(Index));
+
+            AuctionBidsViewModel auctionBidsViewModel = new()
+            {
+                AuctionId = auctionResult.Data.Id,
+                ProductId = auctionResult.Data.ProductId,
+                SellerUserName = HttpContext.User.Identity.Name,
+                Bids = bidsResult.Data
+            };
+
+            return View(auctionBidsViewModel);
         }
 
         [HttpPost]

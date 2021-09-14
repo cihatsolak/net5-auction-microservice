@@ -66,6 +66,7 @@ namespace ESourcing.UI
 
             services.AddHttpClient<ProductClient>();
             services.AddHttpClient<AuctionClient>();
+            services.AddHttpClient<BidClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
