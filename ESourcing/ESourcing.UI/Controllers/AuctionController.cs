@@ -84,14 +84,9 @@ namespace ESourcing.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(int id)
+        public IActionResult Detail(string id)
         {
-            if (0 >= id)
-                return null;
-
-
-
-            return View(new AuctionViewModel());
+            return View(new AuctionBidsViewModel());
         }
 
         [HttpPost]

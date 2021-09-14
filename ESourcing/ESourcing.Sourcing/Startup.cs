@@ -24,6 +24,13 @@ namespace ESourcing.Sourcing
             services.AddServiceConfiguration();
             services.AddSwaggerConfiguration();
             services.AddEventBusConfiguration(Configuration);
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ESourcing.UI.Policy", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithOrigins("https://localhost:5004");
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -36,11 +43,11 @@ namespace ESourcing.Sourcing
             }
 
             app.UseRouting();
-
             app.UseAuthorization();
+            app.UseCors("ESourcing.UI.Policy");
 
             app.UseEndpoints(endpoints =>
-            { 
+            {
                 endpoints.MapHub<AuctionHub>("/auctionhub");
                 endpoints.MapControllers();
             });
