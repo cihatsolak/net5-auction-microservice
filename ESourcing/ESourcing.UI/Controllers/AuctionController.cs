@@ -1,6 +1,8 @@
 ﻿using ESourcing.UI.Clients;
 using ESourcing.UI.Core.Entities;
+using ESourcing.UI.Core.ResultModels;
 using ESourcing.UI.Models.Auctions;
+using ESourcing.UI.Models.Bids;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -97,9 +99,7 @@ namespace ESourcing.UI.Controllers
                 return RedirectToAction(nameof(Index));
 
             var bidsResult = await _bidClient.GetBidsByAuctionId(id);
-            if (!bidsResult.IsSuccess)
-                return RedirectToAction(nameof(Index));
-
+            
             AuctionBidsViewModel auctionBidsViewModel = new()
             {
                 AuctionId = auctionResult.Data.Id,
@@ -115,6 +115,15 @@ namespace ESourcing.UI.Controllers
         public IActionResult Detail(AuctionViewModel auctionViewModel)
         {
             return View();
+        }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<Result<string>> SendBid(BidViewModel bidViewModel)
+        {
+            bidViewModel.CreatedAt = DateTime.Now;
+            var sendBidResponse = await _bidClient.SendBidAsync(bidViewModel);
+            return sendBidResponse;
         }
         #endregion
     }

@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace ESourcing.UI.Clients
@@ -38,6 +40,21 @@ namespace ESourcing.UI.Clients
                 return new Result<List<BidViewModel>>(false, ResultConstants.RecordNotFound);
 
             return new Result<List<BidViewModel>>(true, ResultConstants.RecordFound, result);
+        }
+
+        public async Task<Result<string>> SendBidAsync(BidViewModel bidViewModel)
+        {
+            StringContent content = new(JsonConvert.SerializeObject(bidViewModel));
+            content.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
+
+            var response = await _httpClient.PostAsync("SendBid", content);
+            if (!response.IsSuccessStatusCode)
+            {
+                return new Result<string>(false, ResultConstants.CreateNotSuccessfully);
+            }
+
+            var result = await response.Content.ReadAsStringAsync();
+            return new Result<string>(true, ResultConstants.CreateSuccessfully, result);           
         }
         #endregion
     }

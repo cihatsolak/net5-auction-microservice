@@ -1,6 +1,6 @@
 ﻿const hubAddress = "https://localhost:5003/auctionhub";
 
-var groupName = "Auction-" + $("AuctionId").val();
+var groupName = "Auction-" + $("#AuctionId").val();
 
 var connection = new signalR.HubConnectionBuilder()
     .configureLogging(signalR.LogLevel.Debug)
@@ -21,13 +21,17 @@ connection.start()
         $("#send-button").prop('disabled', true);
     });
 
+connection.on("BidsAsync", function (user, bid) {
+    addBidToTable(user, bid);
+});
+
 $("#send-button").click(function () {
 
     var sendBidRequestModel = {
-        AuctionId: $("AuctionId").val(),
+        AuctionId: $("#AuctionId").val(),
         ProductId: $("#ProductId").val(),
         SellerUserName: $("#SellerUserName").val(),
-        Price: parseFloat($("#Price").val()).toString()
+        Price: parseFloat($("#price").val()).toString()
     };
 
     sendBid(sendBidRequestModel);
@@ -35,5 +39,36 @@ $("#send-button").click(function () {
 });
 
 function sendBid(sendBidRequestModel) {
+    $.ajax({
+        url: "/Auction/SendBid",
+        type: "POST",
+        data: sendBidRequestModel,
+        success: function (response) {
+            if (response.isSuccess) {
+                $("#price").val("");
+                connection.invoke("SendBidAsync", groupName, sendBidRequestModel.SellerUserName, sendBidRequestModel.Price)
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
+}
+
+function addBidToTable(user, bid) {
+
+    let tbodyString = "<tr>";
+    tbodyString += "<td>" + user + "</td>";
+    tbodyString += "<td>" + bid + "</td>";
+    tbodyString += "</tr>";
+
+    if ($('table > tbody> tr:first').length > 0) {
+        $('table > tbody> tr:first').before(tbodyString);
+    } else {
+        $('.bidLine').append(tbodyString);
+    }
 
 }
