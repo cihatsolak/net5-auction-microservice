@@ -1,3 +1,4 @@
+using ESourcing.Sourcing.Hubs.Auctions;
 using ESourcing.Sourcing.Infrastructure.IOC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +40,8 @@ namespace ESourcing.Sourcing
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
-            {
+            { 
+                endpoints.MapHub<AuctionHub>("/auctionhub");
                 endpoints.MapControllers();
             });
         }

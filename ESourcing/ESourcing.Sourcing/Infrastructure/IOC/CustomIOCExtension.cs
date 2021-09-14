@@ -33,6 +33,7 @@ namespace ESourcing.Sourcing.Infrastructure.IOC
             services.AddTransient<IBidRepository, BidRepository>();
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddSignalR();
         }
 
         public static void AddSwaggerConfiguration(this IServiceCollection services)
