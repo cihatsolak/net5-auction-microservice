@@ -43,6 +43,11 @@ namespace ESourcing.UI
               .AddEntityFrameworkStores<WebAppContext>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
+
             services.AddFluentValidation(configurationExpression =>
             {
                 configurationExpression.RegisterValidatorsFromAssemblyContaining<Startup>();
@@ -66,6 +71,7 @@ namespace ESourcing.UI
 
             services.AddHttpClient<ProductClient>();
             services.AddHttpClient<AuctionClient>();
+            services.AddHttpClient<BidClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -75,6 +81,7 @@ namespace ESourcing.UI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();

@@ -1,6 +1,9 @@
 ﻿using ESourcing.UI.Clients;
 using ESourcing.UI.Core.Entities;
+using ESourcing.UI.Core.ResultModels;
 using ESourcing.UI.Models.Auctions;
+using ESourcing.UI.Models.Bids;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,17 +20,20 @@ namespace ESourcing.UI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ProductClient _productClient;
         private readonly AuctionClient _auctionClient;
+        private readonly BidClient _bidClient;
         #endregion
 
         #region Ctor
         public AuctionController(
             UserManager<AppUser> userManager,
             ProductClient productClient,
-            AuctionClient auctionClient)
+            AuctionClient auctionClient, 
+            BidClient bidClient)
         {
             _userManager = userManager;
             _productClient = productClient;
             _auctionClient = auctionClient;
+            _bidClient = bidClient;
         }
         #endregion
 
@@ -84,20 +90,44 @@ namespace ESourcing.UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(string id)
         {
-            if (0 >= id)
-                return null;
+            if (string.IsNullOrWhiteSpace(id))
+                return RedirectToAction(nameof(Index));
 
+            var auctionResult = await _auctionClient.GetAuctionByIdAsync(id);
+            if (!auctionResult.IsSuccess)
+                return RedirectToAction(nameof(Index));
 
+            var bidsResult = await _bidClient.GetBidsByAuctionId(id);
+            
+            AuctionBidsViewModel auctionBidsViewModel = new()
+            {
+                AuctionId = auctionResult.Data.Id,
+                ProductId = auctionResult.Data.ProductId,
+                SellerUserName = HttpContext.User.Identity.Name,
+                Bids = bidsResult.Data,
+                IsAdmin = bool.Parse(HttpContext.Session.GetString("IsAdmin"))
+            };
 
-            return View(new AuctionViewModel());
+            return View(auctionBidsViewModel);
         }
 
         [HttpPost]
-        public IActionResult Detail(AuctionViewModel auctionViewModel)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> SendBid(BidViewModel bidViewModel)
         {
-            return View();
+            bidViewModel.CreatedAt = DateTime.Now;
+            var sendBidResponse = await _bidClient.SendBidAsync(bidViewModel);
+            return Json(sendBidResponse);
+        }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> CompleteAuction(string auctionId)
+        {
+            var result = await _auctionClient.CompleteAuctionAsync(auctionId);
+            return Json(result.Data);
         }
         #endregion
     }

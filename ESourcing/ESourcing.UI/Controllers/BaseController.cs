@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ESourcing.UI.Controllers
 {
     [AutoValidateAntiforgeryToken]
-    //[Authorize]
+    [Authorize]
     public class BaseController : Controller
     {
     }
