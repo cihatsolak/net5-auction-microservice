@@ -84,8 +84,8 @@ function sendCompleteBid(auctionId) {
         url: "/Auction/CompleteAuction",
         type: "POST",
         data: { auctionId: auctionId },
-        success: function (response) {
-            if (response.isSuccess) {
+        success: function (isSuccess) {
+            if (isSuccess) {
                 console.log("Your transaction was successful!");
                 windows.location.href = "/Auction/Index";
             }

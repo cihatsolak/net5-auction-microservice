@@ -78,7 +78,7 @@ namespace ESourcing.UI.Clients
             return new Result<AuctionViewModel>(true, ResultConstants.RecordFound, result);
         }
 
-        public async Task<Result<string>> CompleteAuctionAsync(string id)
+        public async Task<Result<bool>> CompleteAuctionAsync(string id)
         {
             StringContent content = new(JsonConvert.SerializeObject(id));
             content.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
@@ -86,15 +86,15 @@ namespace ESourcing.UI.Clients
             var httpResponseMessage = await _httpClient.PostAsync("/Auction/CompleteAuction", content);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                return new Result<string>(false, ResultConstants.AuctionNotCompleted);
+                return new Result<bool>(false, ResultConstants.AuctionNotCompleted);
             }
 
             var responseMessage = await httpResponseMessage.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<string>(responseMessage);
-            if (result is null)
-                return new Result<string>(false, ResultConstants.AuctionNotCompleted);
+            bool isSuccess = JsonConvert.DeserializeObject<bool>(responseMessage);
+            if (!isSuccess)
+                return new Result<bool>(false, ResultConstants.AuctionNotCompleted);
 
-            return new Result<string>(true, ResultConstants.AuctionCompleted, result);
+            return new Result<bool>(true, ResultConstants.AuctionCompleted, isSuccess);
         }
         #endregion
     }
