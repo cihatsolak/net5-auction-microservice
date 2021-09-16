@@ -147,7 +147,7 @@ namespace ESourcing.Sourcing.Controllers
                 throw;
             }
 
-            return Accepted();
+            return Accepted(updateResponse);
         }
 
         [HttpPost]

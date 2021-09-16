@@ -20,14 +20,14 @@ namespace ESourcing.UI.Clients
         public ProductClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(ServicesConstants.LocalProductBaseAddress);
+            _httpClient.BaseAddress = new Uri(ServicesConstants.BaseAddress);
         }
         #endregion
 
         #region Methods
         public async Task<Result<List<ProductViewModel>>> GetProductsAsync()
         {
-            var httpResponseMessage = await _httpClient.GetAsync("Product/GetProducts");
+            var httpResponseMessage = await _httpClient.GetAsync("/Product/GetProducts");
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 return new Result<List<ProductViewModel>>(false, ResultConstants.RecordNotFound);

@@ -1,4 +1,4 @@
-﻿const hubAddress = "https://localhost:5003/auctionhub";
+﻿const hubAddress = "http://localhost:8001/auctionhub";
 
 var groupName = "Auction-" + $("#AuctionId").val();
 
@@ -84,8 +84,8 @@ function sendCompleteBid(auctionId) {
         url: "/Auction/CompleteAuction",
         type: "POST",
         data: { auctionId: auctionId },
-        success: function (response) {
-            if (response.isSuccess) {
+        success: function (isSuccess) {
+            if (isSuccess) {
                 console.log("Your transaction was successful!");
                 windows.location.href = "/Auction/Index";
             }

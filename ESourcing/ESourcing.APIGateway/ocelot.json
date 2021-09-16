@@ -15,7 +15,7 @@
     },
     //Sourcing API
     {
-      "DownstreamPathTemplate": "/api/v1/Auction",
+      "DownstreamPathTemplate": "/api/v1/Auction/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

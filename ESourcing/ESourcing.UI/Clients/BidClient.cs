@@ -21,14 +21,14 @@ namespace ESourcing.UI.Clients
         public BidClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri($"{ServicesConstants.LocalSourcingBaseAddress}Bid/");
+            _httpClient.BaseAddress = new Uri(ServicesConstants.BaseAddress);
         }
         #endregion
 
         #region Methods
         public async Task<Result<List<BidViewModel>>> GetBidsByAuctionId(string auctionId)
         {
-            var httpResponseMessage = await _httpClient.GetAsync($"GetBidsByAuctionId/{auctionId}");
+            var httpResponseMessage = await _httpClient.GetAsync($"/Bid/GetBidsByAuctionId/{auctionId}");
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 return new Result<List<BidViewModel>>(false, ResultConstants.RecordNotFound);
@@ -47,7 +47,7 @@ namespace ESourcing.UI.Clients
             StringContent content = new(JsonConvert.SerializeObject(bidViewModel));
             content.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
 
-            var response = await _httpClient.PostAsync("SendBid", content);
+            var response = await _httpClient.PostAsync("/Bid/SendBid", content);
             if (!response.IsSuccessStatusCode)
             {
                 return new Result<string>(false, ResultConstants.CreateNotSuccessfully);
