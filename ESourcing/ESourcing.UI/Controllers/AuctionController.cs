@@ -76,7 +76,7 @@ namespace ESourcing.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AuctionViewModel auctionViewModel)
         {
-            auctionViewModel.Status = 1;
+            auctionViewModel.Status = default;
             auctionViewModel.CreatedAt = DateTime.Now;
 
             var result = await _auctionClient.CreateAuctionAsync(auctionViewModel);

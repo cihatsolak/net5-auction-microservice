@@ -1,4 +1,4 @@
-﻿const hubAddress = "https://localhost:5003/auctionhub";
+﻿const hubAddress = "http://localhost:8001/auctionhub";
 
 var groupName = "Auction-" + $("#AuctionId").val();
 
