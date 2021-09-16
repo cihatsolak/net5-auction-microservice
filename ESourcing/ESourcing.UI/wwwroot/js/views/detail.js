@@ -38,6 +38,12 @@ $("#send-button").click(function () {
     event.preventDefault();
 });
 
+$("#finish").click(function (event) {
+    let auctionId = $("#AuctionId").val();
+    sendCompleteBid(auctionId);
+    event.preventDefault();
+});
+
 function sendBid(sendBidRequestModel) {
     $.ajax({
         url: "/Auction/SendBid",
@@ -71,4 +77,21 @@ function addBidToTable(user, bid) {
         $('.bidLine').append(tbodyString);
     }
 
+}
+
+function sendCompleteBid(auctionId) {
+    $.ajax({
+        url: "/Auction/CompleteAuction",
+        type: "POST",
+        data: { auctionId: auctionId },
+        success: function (response) {
+            if (response.isSuccess) {
+                console.log("Your transaction was successful!");
+                windows.location.href = "/Auction/Index";
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
+    });
 }

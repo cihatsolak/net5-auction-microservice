@@ -3,6 +3,7 @@ using ESourcing.UI.Infrastructure.Extensions;
 using ESourcing.UI.Models.Users;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -61,6 +62,8 @@ namespace ESourcing.UI.Controllers
                 ModelState.AddModelError(string.Empty, "Email address or password is invalid");
                 return View(signInViewModel);
             }
+
+            HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString()); //Note: AspNetUserRoles
 
             return RedirectToAction("Index", "Home");
         }

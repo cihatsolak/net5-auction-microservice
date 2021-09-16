@@ -3,6 +3,7 @@ using ESourcing.UI.Core.Entities;
 using ESourcing.UI.Core.ResultModels;
 using ESourcing.UI.Models.Auctions;
 using ESourcing.UI.Models.Bids;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -105,25 +106,28 @@ namespace ESourcing.UI.Controllers
                 AuctionId = auctionResult.Data.Id,
                 ProductId = auctionResult.Data.ProductId,
                 SellerUserName = HttpContext.User.Identity.Name,
-                Bids = bidsResult.Data
+                Bids = bidsResult.Data,
+                IsAdmin = bool.Parse(HttpContext.Session.GetString("IsAdmin"))
             };
 
             return View(auctionBidsViewModel);
         }
 
         [HttpPost]
-        public IActionResult Detail(AuctionViewModel auctionViewModel)
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> SendBid(BidViewModel bidViewModel)
         {
-            return View();
+            bidViewModel.CreatedAt = DateTime.Now;
+            var sendBidResponse = await _bidClient.SendBidAsync(bidViewModel);
+            return Json(sendBidResponse);
         }
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public async Task<Result<string>> SendBid(BidViewModel bidViewModel)
+        public async Task<IActionResult> CompleteAuction(string auctionId)
         {
-            bidViewModel.CreatedAt = DateTime.Now;
-            var sendBidResponse = await _bidClient.SendBidAsync(bidViewModel);
-            return sendBidResponse;
+            var result = await _auctionClient.CompleteAuctionAsync(auctionId);
+            return Json(result.Data);
         }
         #endregion
     }
