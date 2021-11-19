@@ -47,9 +47,17 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-warning" />
             </div>
         </form>
+    </div>
+    <div class="col-md-4 offset-md-4 social">
+        <a asp-action="FacebookLogin" class="btn btn-block btn-primary">
+            <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+        </a>
+        <a asp-action="GoogleLogin" class="btn btn-block btn-danger">
+            <i class="fab fa-google-plus-g mr-2"></i> Sign in using Google
+        </a>
     </div>
 </div>
 
