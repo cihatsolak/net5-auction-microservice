@@ -66,6 +66,18 @@ namespace ESourcing.UI
                     options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
                 });
 
+            services.AddAuthentication()
+                .AddFacebook(options =>
+            {
+                options.AppId = "942618773003475";
+                options.AppSecret = "c6e0b1ddff2cc428c8242a18ae46d8a8";
+            })
+                .AddGoogle(options =>
+            {
+                options.ClientId = "";
+                options.ClientSecret = "";
+            });
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
 
